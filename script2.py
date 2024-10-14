@@ -1,4 +1,3 @@
-from datetime import datetime, date
+from datetime import datetime
 
-print('Current date: ', datetime.now().date().isoformat())
-
+print('Current date: ', datetime.now().strftime('%Y-%m-%d'))
