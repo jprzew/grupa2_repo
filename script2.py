@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, date
 
-print('Current time: ', datetime.now())
+print('Current date: ', datetime.now().date().isoformat())
 
