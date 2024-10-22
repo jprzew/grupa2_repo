@@ -1,3 +1,5 @@
+"""Calculate the number of days since Ulam's birthday"""
+
 from datetime import date
 
 print('Hello world!')
