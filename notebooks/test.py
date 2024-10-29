@@ -14,6 +14,10 @@
 # ---
 
 # %%
+from functools import reduce
+
+
+# %%
 def factorial(n):
     """Computes factorial.
 
@@ -23,24 +27,7 @@ def factorial(n):
 
     if not isinstance(n, int) or n < 0:
         raise ValueError('Value of n should be a non-negative integer')
-    
-    result = 1
-    for i in range(1, n+1):
-        result *= i
 
-    return result
-
-
-# %%
-factorial(5)
-
-# %%
-factorial('tralala')
-
-# %%
-factorial.__doc__
-
-# %%
-# ?factorial
+    return reduce(lambda x, y: x * y, range(1, n+1), 1)
 
 # %%
