@@ -15,14 +15,32 @@
 
 # %%
 import random
+import matplotlib.pyplot as plt
 
 
 # %%
 class Population:
 
+
     def __init__(self, n=100):
-        self.speciemens = {Creature() for _ in range(n)}
-        self.n = n
+        self.specimens = {Creature() for _ in range(n)}
+        self.history = []
+
+    @property
+    def specimens(self):
+        return self._specimens
+
+    @specimens.setter
+    def specimens(self, value):
+        self._specimens = value
+        self.n = len(value)
+
+    def natural_selection(self):
+        {specimen.kill() for specimen in self.specimens}
+        self.history.append(self.n)
+        self.specimens = {specimen for specimen in self.specimens
+                          if specimen.alive}
+
 
 class Creature:
     alive = True
@@ -40,33 +58,24 @@ class Creature:
     
 
 # %%
-population = Population(n=5)
+population = Population()
 
 # %%
-population.speciemens
+while population.n:
+    population.natural_selection()
 
 # %%
 population.n
 
 # %%
-population2 = Population(n=1000)
+population.history
 
 # %%
-population2.n
 
 # %%
-{1, 1, 4, 7}
 
 # %%
-{1, 1, 4, 7} | {4, 7, 8}
 
 # %%
-{1, 1, 4, 7} - {4, 7, 8}
-
-# %%
-{1, 1, 4, 7} & {4, 7, 8}
-
-# %%
-{Creature()} * n
 
 # %%
