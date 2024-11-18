@@ -46,8 +46,29 @@ class Population:
     def plot_history(self):
         plt.plot(self.history)
 
+    def plot_histogram(self, parameter):
+        plt.hist([getattr(specimen, parameter) for specimen in self.specimens])
+
+class Probability:
+
+    def __get__(self, obj, objtype=None):
+        return obj._p_death
+
+    def __set__(self, obj, value):  # tutaj chcemy pilnować właściwych wartości ( 0 =< value =< 1)
+        if value < 0:
+            obj._p_death = 0
+        elif value > 1:
+            obj._p_death = 1
+        else:
+            obj._p_death = value
+
 
 class Creature:
+
+    sigma = 0.02
+    p_death = Probability()
+
+    
 
     def __init__(self, p_death=0.2, p_reproduce=0.2):
         self.p_death = p_death
@@ -60,8 +81,8 @@ class Creature:
 
     def reproduce(self):
         if random.random() <= self.p_reproduce and self.alive:
-            return Creature(p_death=self.p_death,
-                            p_reproduce=self.p_reproduce)
+            return Creature(p_death=self.p_death + random.gauss(mu=0, sigma=Creature.sigma),
+                            p_reproduce=self.p_reproduce + random.gauss(mu=0, sigma=Creature.sigma))
 
     
 
@@ -69,7 +90,13 @@ class Creature:
 population = Population()
 
 # %%
-while population.n:
+population.plot_histogram('p_death')
+
+# %%
+population.plot_histogram('p_reproduce')
+
+# %%
+for _ in range(50):
     population.natural_selection()
 
 # %%
@@ -77,6 +104,16 @@ population.n
 
 # %%
 population.plot_history()
+
+# %%
+population.plot_histogram('p_death')
+
+# %%
+population.plot_histogram('p_reproduce')
+
+# %%
+
+# %%
 
 # %%
 
