@@ -13,6 +13,9 @@
 #     name: python3
 # ---
 
+# %% [markdown]
+# # Introduction to OOP
+
 # %%
 import random
 import matplotlib.pyplot as plt
@@ -20,9 +23,16 @@ import matplotlib.pyplot as plt
 
 # %%
 class Population:
+    """A population of creatures.
 
+    Attributes:
+        specimens (set): A set of Creature instances.
+        history (list): A list of population sizes.
+    """
 
     def __init__(self, n=100):
+        """Initialize the population with n creatures."""
+
         self.specimens = {Creature() for _ in range(n)}
         self.history = []
 
@@ -36,6 +46,7 @@ class Population:
         self.n = len(value)
 
     def natural_selection(self):
+        """Model of natural selection process: kill and reproduce."""
         newborns = {specimen.reproduce() for specimen in self.specimens} - {None}
         {specimen.kill() for specimen in self.specimens}
   
@@ -49,26 +60,32 @@ class Population:
     def plot_histogram(self, parameter):
         plt.hist([getattr(specimen, parameter) for specimen in self.specimens])
 
+
 class Probability:
+    """Descriptor for probability attributes."""
+
+    def __set_name__(self, owner, name):
+        self.private_name = '_' + name
 
     def __get__(self, obj, objtype=None):
-        return obj._p_death
+        return getattr(obj, self.private_name)
 
-    def __set__(self, obj, value):  # tutaj chcemy pilnować właściwych wartości ( 0 =< value =< 1)
-        if value < 0:
-            obj._p_death = 0
-        elif value > 1:
-            obj._p_death = 1
-        else:
-            obj._p_death = value
+    def __set__(self, obj, value):
+        setattr(obj, self.private_name, min(1, max(0, value)))
 
 
 class Creature:
+    """A creature with a probability of death and reproduction.
 
-    sigma = 0.02
+    Attributes:
+        p_death (float): Probability of dying.
+        p_reproduce (float): Probability of reproducing.
+        alive (bool): Whether the creature is alive.
+    """
+
+    sigma = 0.02  # Standard deviation random component for mutation
     p_death = Probability()
-
-    
+    p_reproduce = Probability()
 
     def __init__(self, p_death=0.2, p_reproduce=0.2):
         self.p_death = p_death
@@ -110,11 +127,5 @@ population.plot_histogram('p_death')
 
 # %%
 population.plot_histogram('p_reproduce')
-
-# %%
-
-# %%
-
-# %%
 
 # %%
