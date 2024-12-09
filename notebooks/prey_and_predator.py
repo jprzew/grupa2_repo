@@ -18,8 +18,6 @@ import random
 import matplotlib.pyplot as plt
 
 
-
-
 class Probability:
     """Descriptor for probability attributes."""
 
@@ -61,13 +59,22 @@ class Creature:
 
 
 class Predator(Creature):
+    """Class that describes a predator
+
+        Attributes:
+            p_death (float): Probability of dying.
+            p_reproduce (float): Probability of reproducing.
+            p_death_hungry (float): Probability of dying when hungry
+            hungry (bool): Indicates if the predator is hungry
+            alive (bool): Whether the creature is alive.
+        """
 
     p_death_hungry = Probability()
     _p_death = Probability()
 
     def __init__(self, 
                  p_death=0.2,
-                 p_reproduce=0.2, 
+                 p_reproduce=0.31, 
                  p_death_hungry=0.8):
         
         super().__init__(p_death, p_reproduce)
@@ -75,9 +82,9 @@ class Predator(Creature):
         self.hungry = False
 
     def hunt(self, prey):
-         if random.random() <= prey.p_hunt and prey.alive:
-             self.hungry = False
-             prey.alive = False
+        if random.random() <= prey.p_hunt and prey.alive:
+            self.hungry = False
+            prey.alive = False
 
     @property
     def p_death(self):
@@ -86,17 +93,24 @@ class Predator(Creature):
     @p_death.setter
     def p_death(self, value):
         self._p_death = value
-        
 
 
 class Prey(Creature):
+    """Class that describes prey
+
+    Attributes:
+        p_death (float): Probability of dying.
+        p_reproduce (float): Probability of reproducing.
+        p_hunt (float): Probability of being hunt by a predator
+        alive (bool): Whether the creature is alive.
+    """
 
     p_hunt = Probability()
 
     def __init__(self, 
                  p_death=0.2,
-                 p_reproduce=0.2, 
-                 p_hunt=0.3):
+                 p_reproduce=0.22, 
+                 p_hunt=0.8):
         
         super().__init__(p_death, p_reproduce)
         self.p_hunt = p_hunt
@@ -143,6 +157,12 @@ class Population:
 
 
 def hunting(prey, predators):
+    """Simulates hunting of prey by predators
+
+    Attributes:
+      prey (Population) - population of prey
+      predators (Population) - popuation of predators
+    """
     for predator in predators.specimens:
         predator.hungry = True
     
@@ -152,35 +172,48 @@ def hunting(prey, predators):
     for predator, prey in pairs:
         predator.hunt(prey)
 
+
 def simulation(prey, predators, n):
+    """Simulates interaction between populations of prey and predators
+
+    Attributes:
+      prey (Population) - population of prey
+      predators (Population) - popuation of predators
+      n (int) - number of steps
+    """
     for _ in range(n):
         hunting(prey, predators)
         prey.natural_selection()
         predators.natural_selection()
 
-def plot_history(prey, predators):
-    plt.plot(list(zip(prey.history, predators.history)))
 
+def plot_history(prey, predators):
+    """Plots history of the two populations: prey and predators
+
+    Attributes:
+      prey (Population) - population of prey
+      predators (Population) - popuation of predators
+    """
+    plt.plot(list(zip(prey.history, predators.history)))
+    plt.legend(['Prey', 'Predators'])
 
 
 # %%
-N_PREY = 300
+N_PREY = 3000
 N_PREDATOR = 100
 
 population_prey = Population(creator=Prey, n=N_PREY)
 population_predators = Population(creator=Predator, n=N_PREDATOR)
 
 # %%
-simulation(population_prey, population_predators, n=30)
+simulation(population_prey, population_predators, n=100)
 
 # %%
 plot_history(population_prey, population_predators)
 
 
 # %%
-population_predators.history
-
-# %%
+population_predators.plot_history()
 
 # %%
 
