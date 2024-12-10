@@ -1,4 +1,8 @@
 def categorize_by_age(age):
+
+    if not isinstance(age, (int, float)):
+        raise ValueError('Invalid value: age must be int or float.')
+
     if 0 <= age <= 10:
         return 'Child'
     elif 10 < age <= 19:
