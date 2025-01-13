@@ -7,3 +7,4 @@ TARGET = 'species'
 
 INPUT_FILE = 'iris.csv'
 DATA_PATH = 'data'
+PLOTS_PATH = 'plots'
