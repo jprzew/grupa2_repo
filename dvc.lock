@@ -20,3 +20,27 @@ stages:
       hash: md5
       md5: 500a0acbd112b7c512929eac892f9864
       size: 4009
+  plots:
+    cmd: python src/plot.py
+    deps:
+    - path: data/iris.csv
+      hash: md5
+      md5: 500a0acbd112b7c512929eac892f9864
+      size: 4009
+    - path: src/config.py
+      hash: md5
+      md5: fc96f8712d57af52505c4c8c1f90e89c
+      size: 222
+    - path: src/plot.py
+      hash: md5
+      md5: d288b1d2689d249f3cf46658dc4447fb
+      size: 480
+    - path: src/utils.py
+      hash: md5
+      md5: 6bb404186b857a4591c1fcff3613ec95
+      size: 396
+    outs:
+    - path: plots/matrix_plot.png
+      hash: md5
+      md5: b2141da40b2f480b7175b4326e64d664
+      size: 245880
