@@ -167,3 +167,6 @@ data/
 
 # Plots
 plots/
+
+# Evaluation
+eval/
