@@ -65,9 +65,9 @@ stages:
       size: 381
     params:
       params.yaml:
-        evaluate.model: rf
+        evaluate.model: knn-2
     outs:
     - path: eval/metrics.json
       hash: md5
-      md5: cafa865c511b12960042476cc58a460a
+      md5: f38254cff9665f19d980918cbff83325
       size: 36
