@@ -9,6 +9,7 @@ import config as cfg
 from utils import get_repo_path
 import pandas as pd
 import json
+import dvc.api
 
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.tree import DecisionTreeClassifier
@@ -52,11 +53,16 @@ def evaluate_model(model_name: str,
 
 
 def main():
+    # Read data
     df = pd.read_csv(get_repo_path() / cfg.DATA_PATH / cfg.INPUT_FILE)
+
+    # Read parameters
+    params = dvc.api.params_show()
+    model_name = params['evaluate']['model']
 
     X, y = prepare_data(df)
 
-    score = evaluate_model('rf', X, y)
+    score = evaluate_model(model_name, X, y)
 
     with open(get_repo_path() / METRICS_FILE, 'w') as f:
         json.dump({'avg_accuracy': score}, f)
