@@ -16,5 +16,16 @@ stages:
     - data/iris.csv
     outs:
     - plots/matrix_plot.png
+  evaluate:
+    cmd: python src/fit_models.py
+    params:
+    - evaluate.model
+    deps:
+    - src/config.py
+    - src/fit_models.py
+    - src/utils.py
+    - data/iris.csv
+    metrics:
+    - eval/metrics.json
 plots:
   - plots/matrix_plot.png
